@@ -1,36 +1,37 @@
-//  interfaces
-const me = {
-    name: 'Alex',
-    age: 30,
-    speak(text) {
-        console.log(text);
-    },
-    spend(amount) {
-        console.log('I spent, amount');
-        return amount;
-    },
-};
-const greetPerson = (person) => {
-    console.log(person.age);
-};
-greetPerson(me);
-import Invoice from './classes/invoice.js';
-const invOne = new Invoice('mario', 'work on the mario website', 250);
-const invTwo = new Invoice('luigi', 'work on the luigi website', 300);
-console.log(invOne, invTwo);
-let invoices = [];
-invoices.push(invOne);
-console.log(invoices);
-invoices.push(invTwo);
-invoices.forEach((inv) => {
-    console.log(inv.client, inv.details, inv.amount, inv.format());
-});
+import { Payment } from './classes/Payment.js';
+import { Invoice } from './classes/Invoice.js';
+import { ListTemplate } from './classes/ListTemlate.js';
+//
 const from = document.querySelector('.new-item-form');
 const type = document.querySelector('#type');
 const text = document.querySelector('#text');
 const details = document.querySelector('#details');
 const amount = document.querySelector('#amount');
+//
+// list template instance
+const ul = document.querySelector('ul');
+const list = new ListTemplate(ul);
+//
 from.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log(type.value, text.value, details.value, amount.valueAsNumber);
+    let doc;
+    if (type.value === 'invoice') {
+        doc = new Invoice(text.value, details.value, amount.valueAsNumber);
+    }
+    else {
+        doc = new Payment(text.value, details.value, amount.valueAsNumber);
+    }
+    list.render(doc, type.value, 'end');
 });
+// GENERICS
+const addUID = (obj) => {
+    let uid = Math.floor(Math.random() * 100);
+    return Object.assign(Object.assign({}, obj), { uid });
+};
+let docOne = addUID({ name: 'Yoshi', age: 40 });
+// let docTwo = addUID('shaun')
+console.log(docOne.name);
+// const addUID = <T extends object>(obj: T) => {
+//   let uid = Math.floor(Math.random() * 100);
+//   return {...obj, uid};
+//

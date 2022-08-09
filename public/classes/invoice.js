@@ -1,4 +1,4 @@
-class Invoice {
+export class Invoice {
     constructor(c, d, a) {
         this.client = c;
         this.details = d;
@@ -8,4 +8,3 @@ class Invoice {
         return `${this.client} owes ${this.amount} for ${this.details}`;
     }
 }
-export default Invoice;
